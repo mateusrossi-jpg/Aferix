@@ -1,0 +1,6 @@
+{
+  "name": "Aferix",
+  "description": "Aferix - Soluções para ERP. Sistema de gestão de orçamentos, ordens de serviço, precificação técnica e fluxo de caixa para prestadores autônomos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

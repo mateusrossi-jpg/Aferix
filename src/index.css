@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --card: #FFFFFF;
+    --card-foreground: #0F172A;
+    --primary: #0284C7;
+    --primary-hover: #0369A1;
+    --accent: #0D9488;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --muted: #64748B;
+    --border: #E2E8F0;
+  }
+
+  .dark {
+    --background: #141416;
+    --foreground: #F4F4F5;
+    --card: #1F1F24;
+    --card-elevated: #28282E;
+    --card-foreground: #FFFFFF;
+    --primary: #06B6D4;
+    --primary-hover: #22D3EE;
+    --accent: #14B8A6;
+    --success: #30D158;
+    --warning: #FFD60A;
+    --danger: #FF453A;
+    --muted: #A1A1AA;
+    --border: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Typography styles */
+.font-brand {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Ambient subtle lighting for industrial high precision */
+.bg-ambient-light {
+  background-image: radial-gradient(1000px 480px at 50% 0px, rgba(2, 132, 199, 0.04), transparent 75%);
+}
+
+.bg-ambient-dark {
+  background-image: radial-gradient(1200px 520px at 50% 0px, rgba(6, 182, 212, 0.05), transparent 75%);
+}
+
+/* Boutique Card & Surface Physics (Linear, Apple & Stripe style) */
+.aferix-card {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.aferix-card-light {
+  background-color: #FFFFFF;
+  border-color: rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03), inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+.aferix-card-light:hover {
+  transform: translateY(-2px);
+  border-color: rgba(203, 213, 225, 0.95);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.03), inset 0 1px 0 0 rgba(255, 255, 255, 1);
+}
+
+.aferix-card-dark {
+  background-color: #1F1F24;
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.aferix-card-dark:hover {
+  transform: translateY(-2px);
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.aferix-button {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aferix-button:active {
+  transform: scale(0.975);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Fluid Entrance Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

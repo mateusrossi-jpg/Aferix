@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 100" fill="none">
+  <!-- Símbolo Oficial Aferix -->
+  <g transform="translate(4, 5)">
+    <!-- Checkmark + Estrutura da Letra A -->
+    <path
+      d="M 6 48 L 24 48 L 42 82 L 68 24 L 92 82 L 74 82"
+      stroke="#0D4F9C"
+      stroke-width="8"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+      stroke-miterlimit="4"
+    />
+    <!-- Haste Diagonal Ascendente -->
+    <path
+      d="M 44 76 L 79 24"
+      stroke="#0D4F9C"
+      stroke-width="8"
+      stroke-linecap="square"
+    />
+    <!-- Porca Sextavada Laranja Oficial -->
+    <path
+      d="M 81.5 5.5 L 92.5 5.5 L 98 15 L 92.5 24.5 L 81.5 24.5 L 76 15 Z M 87 11.2 A 3.8 3.8 0 1 0 87 18.8 A 3.8 3.8 0 1 0 87 11.2 Z"
+      fill="#F58220"
+      fill-rule="evenodd"
+    />
+  </g>
+</svg>

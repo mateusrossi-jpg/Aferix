@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Aferix</string>
+    <string name="title_activity_main">Aferix</string>
+    <string name="package_name">com.financial.aferix</string>
+    <string name="custom_url_scheme">com.financial.aferix</string>
+</resources>
