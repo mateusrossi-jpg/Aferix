@@ -94,7 +94,7 @@ export function generateBudgetPdf(budget: Budget, profile: UserProfile): jsPDF {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(colorDark[0], colorDark[1], colorDark[2]);
-  doc.text(`REF: #${budget.id.slice(-6).toUpperCase()}`, pageWidth - margin - 5, y + 8, {
+  doc.text(`REF: ${budget.code || '#' + budget.id.slice(-6).toUpperCase()}`, pageWidth - margin - 5, y + 8, {
     align: 'right',
   });
 

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Camera, Image as ImageIcon, Trash2, Plus } from 'lucide-react';
 import { JobPhoto } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { idbStorage } from '../storage/idbStorage';
 
 interface PhotoManagerProps {
   photos: JobPhoto[];
@@ -44,8 +45,8 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(img, 0, 0, width, height);
-        // Compress as JPEG 0.72 quality for ultra compact footprint (~40-70kb)
-        const compressed = canvas.toDataURL('image/jpeg', 0.72);
+        // Compress as JPEG 0.70 quality for ultra compact footprint (~30-50kb)
+        const compressed = canvas.toDataURL('image/jpeg', 0.70);
         callback(compressed);
       } else {
         callback(dataUrl);
@@ -64,6 +65,14 @@ export const PhotoManager: React.FC<PhotoManagerProps> = ({
       if (typeof reader.result === 'string') {
         const rawResult = reader.result;
         compressAndProcessImage(rawResult, (compressedUrl) => {
+          const generatedId = 'photo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+          // Persist full-res in IndexedDB asynchronously
+          idbStorage.setPhoto(generatedId, {
+            url: compressedUrl,
+            caption: caption.trim() || (selectedType === 'antes' ? 'Estado Inicial' : selectedType === 'durante' ? 'Em Execução' : 'Serviço Finalizado'),
+            type: selectedType,
+          });
+
           onAddPhoto({
             url: compressedUrl,
             caption: caption.trim() || (selectedType === 'antes' ? 'Estado Inicial' : selectedType === 'durante' ? 'Em Execução' : 'Serviço Finalizado'),

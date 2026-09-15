@@ -36,6 +36,7 @@ import { CardFeeCalculatorModal } from './CardFeeCalculatorModal';
 import { PreventiveReminderModal } from './PreventiveReminderModal';
 import { useTheme } from '../context/ThemeContext';
 import { downloadBudgetPdf, shareBudgetPdfViaWhatsApp } from '../utils/budgetPdfGenerator';
+import { idbStorage } from '../storage/idbStorage';
 
 interface BudgetDetailModalProps {
   budget: Budget | null;
@@ -132,6 +133,9 @@ export const BudgetDetailModal: React.FC<BudgetDetailModalProps> = ({
       id: 'photo_' + Math.random().toString(36).slice(2, 9),
       timestamp: new Date().toISOString(),
     };
+    // Persiste também no IndexedDB para resiliência offline e preservação do arquivo
+    idbStorage.setPhoto(newPhoto.id, { budgetId: budget.id, ...newPhoto });
+
     const currentPhotos = budget.photos || [];
     onUpdateBudget(budget.id, {
       photos: [...currentPhotos, newPhoto],
@@ -146,6 +150,9 @@ export const BudgetDetailModal: React.FC<BudgetDetailModalProps> = ({
   };
 
   const handleSaveSignature = (dataUrl: string, signerName: string) => {
+    // Guarda cópia segura no IndexedDB
+    idbStorage.setItem(`sig_${budget.id}`, { dataUrl, signerName });
+
     onUpdateBudget(budget.id, {
       clientSignature: dataUrl,
       clientSignatureDate: new Date().toISOString(),

@@ -26,7 +26,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   ];
 
   return (
-    <div className="fixed inset-x-0 bottom-3 z-40 flex justify-center px-4 pointer-events-none">
+    <div className="fixed inset-x-0 bottom-3 pb-[env(safe-area-inset-bottom)] z-40 flex justify-center px-4 pointer-events-none">
       <nav
         className={`w-full max-w-[380px] rounded-2xl border p-1.5 pointer-events-auto backdrop-blur-2xl transition-all duration-200 ${
           isDark

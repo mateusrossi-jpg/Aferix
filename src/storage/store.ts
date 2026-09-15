@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Budget, Client, CatalogItem, Receivable, FinancialTransaction, Appointment, AppNotification, UserProfile, JobStatus, Equipment, PmocReport } from '../types';
 import { enqueueBudgetChange, isOnlineNow } from '../utils/offlineSync';
+import { eventStore } from './eventStore';
 import {
   INITIAL_PROFILE,
   INITIAL_CLIENTS,
@@ -41,8 +42,16 @@ function setStored<T>(key: string, data: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(data));
     window.dispatchEvent(new CustomEvent('aferix_storage_update', { detail: { key } }));
-  } catch (err) {
+  } catch (err: any) {
     console.error(`Error saving to localStorage key: ${key}`, err);
+    // Safe quota recovery: se estourar quota (ex: muitas fotos inline), avisa sem travar o app
+    if (err?.name === 'QuotaExceededError' || err?.code === 22) {
+      window.dispatchEvent(
+        new CustomEvent('aferix_quota_exceeded', {
+          detail: { message: 'Cota de armazenamento excedida. Otimizando espaço em cache.' },
+        })
+      );
+    }
   }
 }
 
@@ -109,6 +118,14 @@ export const aferixStore = {
       syncedAt: isOnline ? new Date().toISOString() : undefined,
     };
     setStored(STORAGE_KEYS.BUDGETS, [newBudget, ...current]);
+
+    // Emit operational event for auditing & immutable timeline
+    eventStore.emit('BUDGET_CREATED', newBudget.id, {
+      code: newBudget.code,
+      clientName: newBudget.clientName,
+      totalValue: newBudget.totalValue,
+      status: newBudget.status,
+    });
 
     // Enqueue for offline sync tracking
     enqueueBudgetChange('create_budget', newBudget.id, newBudget);
@@ -216,6 +233,17 @@ export const aferixStore = {
 
     aferixStore.updateBudget(id, updates);
 
+    // Audit Event
+    eventStore.emit(
+      status === 'aprovado'
+        ? 'BUDGET_APPROVED'
+        : status === 'finalizado'
+        ? 'WORKORDER_COMPLETED'
+        : 'BUDGET_STATUS_CHANGED',
+      id,
+      { code: budget.code, oldStatus: budget.status, newStatus: status, totalValue: budget.totalValue }
+    );
+
     // Notify
     aferixStore.addNotification({
       title: `Status Atualizado: ${budget.code}`,
@@ -239,6 +267,14 @@ export const aferixStore = {
 
     const updated = current.map(r => r.id === id ? { ...r, status: 'recebido' as const, receivedAt: new Date().toISOString().slice(0, 10) } : r);
     setStored(STORAGE_KEYS.RECEIVABLES, updated);
+
+    // Operational audit event
+    eventStore.emit('RECEIVABLE_PAID', id, {
+      budgetId: item.budgetId,
+      clientName: item.clientName,
+      value: item.value,
+      description: item.description,
+    });
 
     // Add entry transaction
     aferixStore.addTransaction({
